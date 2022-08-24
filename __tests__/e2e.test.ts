@@ -1,6 +1,6 @@
 import * as WebdriverIO from 'webdriverio';
 
-describe.each(['Android', 'iOS'])('%s', (platform) => {
+describe.each(['Android', 'iOS'])('%s', platform => {
   let client: WebdriverIO.Browser<'async'>;
 
   beforeAll(async () => {
@@ -27,21 +27,39 @@ describe.each(['Android', 'iOS'])('%s', (platform) => {
     expect(client).toBeDefined();
   });
 
+  beforeEach(async () => {
+    await client.reset();
+  });
+
   afterAll(async () => {
     await client.deleteSession();
   });
 
-  test('incrementing counter works', async () => {
+  async function openTest(name: string) {
+    const button = await client.$('~' + name);
+    await button.click();
+    await client.pause(200);
+  }
+
+  test('hello world', async () => {
+    await openTest('HelloWorld');
+
     const text = await client.$('~text');
-    const textBefore = await text.getText();
-    expect(textBefore).toBe('Count: 0');
+    const string = await text.getText();
+    expect(string).toBe('Hello world!');
+  });
+
+  test('animate width', async () => {
+    await openTest('AnimateWidth');
+
+    const box = await client.$('~box');
+    const before = await box.getSize();
 
     const button = await client.$('~button');
     await button.click();
+    await client.pause(200);
 
-    await client.pause(100);
-
-    const textAfter = await text.getText();
-    expect(textAfter).toBe('Count: 1');
+    const after = await box.getSize();
+    expect(after.width).not.toBe(before.width);
   });
 });
