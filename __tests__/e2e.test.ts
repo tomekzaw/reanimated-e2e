@@ -4,13 +4,23 @@ describe('Appium with Jest automation testing', () => {
   let client: WebdriverIO.Browser<'async'>;
 
   beforeAll(async () => {
+    const android = {
+      platformName: 'Android',
+      app: './android/app/build/outputs/apk/debug/app-debug.apk',
+    };
+
+    const ios = {
+      platformName: 'iOS',
+      deviceName: 'iPhone 13',
+      platformVersion: '15.0',
+      bundleId: 'org.reactjs.native.example.MyApp',
+      automationName: 'XCUITest',
+    };
+
     const opts = {
       path: '/wd/hub',
       port: 4723,
-      capabilities: {
-        platformName: 'Android',
-        app: './android/app/build/outputs/apk/debug/app-debug.apk',
-      },
+      capabilities: ios,
     };
 
     client = await WebdriverIO.remote(opts);
@@ -22,16 +32,16 @@ describe('Appium with Jest automation testing', () => {
   });
 
   test('incrementing counter works', async () => {
-    const field = await client.$('android.widget.TextView');
-    const textBefore = await field.getText();
+    const text = await client.$('~text');
+    const textBefore = await text.getText();
     expect(textBefore).toBe('Count: 0');
 
-    const button = await client.$('android.widget.Button');
+    const button = await client.$('~button');
     await button.click();
 
     await client.pause(100);
 
-    const textAfter = await field.getText();
+    const textAfter = await text.getText();
     expect(textAfter).toBe('Count: 1');
   });
 });
