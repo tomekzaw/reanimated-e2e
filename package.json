@@ -10,8 +10,10 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "appium": "^1.22.3",
     "react": "18.0.0",
-    "react-native": "0.69.4"
+    "react-native": "0.69.4",
+    "webdriverio": "^7.23.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
