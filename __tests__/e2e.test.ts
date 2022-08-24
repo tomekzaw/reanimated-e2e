@@ -1,5 +1,9 @@
 import * as WebdriverIO from 'webdriverio';
 
+if (process.env.PLATFORM !== 'android' && process.env.PLATFORM !== 'ios') {
+  fail('`PLATFORM` must be either "android" or "ios".');
+}
+
 describe('Appium with Jest automation testing', () => {
   let client: WebdriverIO.Browser<'async'>;
 
@@ -20,7 +24,7 @@ describe('Appium with Jest automation testing', () => {
     const opts = {
       path: '/wd/hub',
       port: 4723,
-      capabilities: ios,
+      capabilities: process.env.PLATFORM === 'android' ? android : ios,
     };
 
     client = await WebdriverIO.remote(opts);
