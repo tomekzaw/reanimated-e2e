@@ -27,10 +27,10 @@ describe.each(['Android', 'iOS'])('%s', platform => {
     expect(client).toBeDefined();
   });
 
-  beforeEach(async () => {
+  afterEach(async () => {
     // await client.reset();
 
-    const button = await client.$('~reset');
+    const button = await client.$('~menu');
     await button.click();
     await client.pause(200);
   });
