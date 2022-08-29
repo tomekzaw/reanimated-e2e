@@ -13,16 +13,14 @@ export function AnimateWidth() {
 
   const box = useAnimatedStyle(() => ({width: width.value}));
 
+  const handlePress = () => {
+    width.value = withTiming(250, {duration: 150});
+  };
+
   return (
     <View style={styles.container}>
       <Animated.View style={[styles.box, box]} {...testProps('box')} />
-      <Button
-        onPress={() => {
-          width.value = withTiming(250, {duration: 150});
-        }}
-        title="Button"
-        {...testProps('button')}
-      />
+      <Button onPress={handlePress} title="Button" {...testProps('button')} />
     </View>
   );
 }
