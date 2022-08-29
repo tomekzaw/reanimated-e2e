@@ -28,7 +28,11 @@ describe.each(['Android', 'iOS'])('%s', platform => {
   });
 
   beforeEach(async () => {
-    await client.reset();
+    // await client.reset();
+
+    const button = await client.$('~reset');
+    await button.click();
+    await client.pause(200);
   });
 
   afterAll(async () => {
@@ -61,5 +65,19 @@ describe.each(['Android', 'iOS'])('%s', platform => {
 
     const after = await box.getSize();
     expect(after.width).not.toBe(before.width);
+  });
+
+  test('scroll to', async () => {
+    await openTest('ScrollTo');
+
+    const box = await client.$('~box-orange'); // for some reason it doesn't work with ~box-red
+    const before = await box.getLocation();
+
+    const button = await client.$('~Button');
+    await button.click();
+    await client.pause(500);
+
+    const after = await box.getLocation();
+    expect(after.y).not.toBe(before.y);
   });
 });
