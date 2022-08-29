@@ -5,10 +5,12 @@ import React from 'react';
 export default function App() {
   const [count, setCount] = React.useState(0);
 
+  const handlePress = () => setCount(c => c + 1);
+
   return (
     <View style={styles.container}>
-      <Text>Count: {count}</Text>
-      <Button onPress={() => setCount(c => c + 1)} title="Increment" />
+      <Text testID="text">Count: {count}</Text>
+      <Button onPress={handlePress} title="Increment" testID="button" />
     </View>
   );
 }
