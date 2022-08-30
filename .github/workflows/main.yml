@@ -54,4 +54,4 @@ jobs:
         run: yarn detox test --configuration ios.debug
 
       - name: Stop Metro bundler
-        run: kill -9 $(lsof -t -i tcp:8081
+        run: kill -9 $(lsof -t -i tcp:8081)
