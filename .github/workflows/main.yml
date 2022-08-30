@@ -31,3 +31,6 @@ jobs:
       - name: pod install
         working-directory: ios
         run: pod install
+
+      - name: Build iOS app
+        run: yarn react-native run-ios
