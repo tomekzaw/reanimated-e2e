@@ -22,8 +22,11 @@ jobs:
           path: ./node_modules
           key: ${{ hashFiles('./yarn.lock') }}
 
-      - name: yarn install --frozen-lockfile
+      - name: Install node_modules
         run: yarn install --frozen-lockfile
+
+      - name: Rebuild Detox cache
+        run: yarn detox clean-framework-cache && yarn detox build-framework-cache
 
       - name: Cache Pods
         uses: actions/cache@v3
