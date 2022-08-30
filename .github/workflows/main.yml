@@ -47,5 +47,8 @@ jobs:
       - name: Build iOS app
         run: yarn detox build --configuration ios.debug
 
+      - name: Launch Metro bundler in background
+        run: yarn react-native start & disown
+
       - name: Run E2E tests
         run: yarn detox test --configuration ios.debug
