@@ -47,11 +47,5 @@ jobs:
       - name: Build iOS app
         run: yarn detox build --configuration ios.debug
 
-      - name: Start Metro bundler
-        run: yarn react-native start & disown
-
       - name: Run E2E tests
-        run: yarn detox test --configuration ios.debug
-
-      - name: Stop Metro bundler
-        run: kill -9 $(lsof -t -i tcp:8081)
+        run: yarn react-native start & yarn detox test --configuration ios.debug
