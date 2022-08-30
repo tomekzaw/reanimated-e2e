@@ -45,7 +45,7 @@ jobs:
           key: ${{ hashFiles('./ios/Podfile.lock') }}
 
       - name: Build iOS app
-        run: yarn detox build --configuration ios.release
+        run: yarn detox build --configuration ios.debug
 
       - name: Run E2E tests
-        run: yarn detox test --configuration ios.release
+        run: yarn detox test --configuration ios.debug
