@@ -44,5 +44,8 @@ jobs:
       - name: Build iOS app
         run: yarn detox build --configuration ios.debug
 
+      - name: Do something
+        run: detox clean-framework-cache && detox build-framework-cache
+
       - name: Run E2E tests
         run: yarn detox test --configuration ios.debug
