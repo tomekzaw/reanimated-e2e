@@ -25,6 +25,7 @@ describe('Appium with Jest automation testing', () => {
       path: '/wd/hub',
       port: 4723,
       capabilities: process.env.PLATFORM === 'android' ? android : ios,
+      connectionRetryTimeout: 10 * 60 * 1000,
     };
 
     client = await WebdriverIO.remote(opts);
