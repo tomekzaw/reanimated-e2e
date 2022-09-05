@@ -28,8 +28,12 @@ describe('Appium with Jest automation testing', () => {
       connectionRetryTimeout: 10 * 60 * 1000,
     };
 
+    await WebdriverIO.remote(opts); // just to install WebDriverAgentRunner on iOS on CI
+
     client = await WebdriverIO.remote(opts);
-    expect(client).toBeDefined();
+    if (!client) {
+      fail('Cannot initialize client');
+    }
   });
 
   afterEach(async () => {
