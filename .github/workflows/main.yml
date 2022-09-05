@@ -38,7 +38,7 @@ jobs:
           path: |
             ./ios/build
             /Library/Developer/Xcode/DerivedData
-          key: ${{ hashFiles('./ios/Podfile.lock') }}-v2
+          key: ${{ hashFiles('./ios/Podfile.lock') }}-v3
 
       - name: Build iOS app
         run: yarn build:ios:debug
