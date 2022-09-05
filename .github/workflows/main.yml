@@ -35,8 +35,10 @@ jobs:
       - name: Cache build
         uses: actions/cache@v3
         with:
-          path: ./ios/build
-          key: ${{ hashFiles('./ios/Podfile.lock') }}
+          path: |
+            ./ios/build
+            /Library/Developer/Xcode/DerivedData
+          key: ${{ hashFiles('./ios/Podfile.lock') }}-v2
 
       - name: Build iOS app
         run: yarn build:ios:debug
