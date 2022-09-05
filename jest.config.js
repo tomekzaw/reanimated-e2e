@@ -1,4 +1,4 @@
 module.exports = {
-  testTimeout: 30000,
+  testTimeout: 120000,
   bail: 0,
 };
