@@ -43,8 +43,8 @@ jobs:
       - name: Build iOS app
         run: yarn build:ios:debug
 
-      - name: Run Appium server
-        run: yarn appium &
+      # - name: Run Appium server
+      #   run: yarn appium &
 
-      - name: Run iOS E2E tests
-        run: yarn test:e2e:ios:debug
+      # - name: Run iOS E2E tests
+      #   run: yarn test:e2e:ios:debug
