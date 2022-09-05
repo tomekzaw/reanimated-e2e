@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: ['appium']
+  pull_request:
+    branches: ['appium']
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-12
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: ./node_modules
+          key: ${{ hashFiles('./yarn.lock') }}
+
+      - name: Install node_modules
+        run: yarn install --frozen-lockfile
+
+      - name: Cache Pods
+        uses: actions/cache@v3
+        with:
+          path: ./ios/Pods
+          key: ${{ hashFiles('./ios/Podfile.lock') }}
+
+      - name: Install Pods
+        working-directory: ios
+        run: pod install
+
+      - name: Cache build
+        uses: actions/cache@v3
+        with:
+          path: ./ios/build
+          key: ${{ hashFiles('./ios/Podfile.lock') }}
+
+      - name: Build iOS app
+        run: xcodebuild -workspace ios/MyApp.xcworkspace -UseNewBuildSystem=YES -scheme MyApp -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build -quiet
