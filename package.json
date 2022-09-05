@@ -3,13 +3,10 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
     "start": "react-native start",
-    "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "test:e2e:android": "PLATFORM=android yarn test",
-    "test:e2e:ios": "PLATFORM=ios yarn test"
+    "build:ios:debug": "react-native run-ios --simulator='iPhone 13 Pro (15.5)'",
+    "test:e2e:ios:debug": "PLATFORM=ios jest"
   },
   "dependencies": {
     "appium": "^1.22.3",
