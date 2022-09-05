@@ -40,3 +40,12 @@ jobs:
 
       - name: Build iOS app
         run: xcodebuild -workspace ios/MyApp.xcworkspace -UseNewBuildSystem=YES -scheme MyApp -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build -quiet
+
+      - name: Set up Appium
+        run: npm install -g appium
+
+      - name: Run Appium server
+        run: appium &
+
+      - name: Run iOS E2E tests
+        run: yarn test:e2e:ios
