@@ -25,15 +25,14 @@ describe('Appium with Jest automation testing', () => {
       path: '/wd/hub',
       port: 4723,
       capabilities: process.env.PLATFORM === 'android' ? android : ios,
-      connectionRetryTimeout: 10 * 60 * 1000,
+      connectionRetryTimeout: 5 * 60 * 1000,
     };
-
-    await WebdriverIO.remote(opts); // just to install WebDriverAgentRunner on iOS on CI
 
     client = await WebdriverIO.remote(opts);
     if (!client) {
-      fail('Cannot initialize client');
+      fail('Failed to initialize client');
     }
+    await client.reset(); // it helps the CI
   });
 
   afterEach(async () => {
