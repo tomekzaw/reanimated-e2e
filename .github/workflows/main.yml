@@ -47,4 +47,4 @@ jobs:
         run: yarn appium &
 
       - name: Run iOS E2E tests
-        run: yarn test:e2e:ios:debug
+        run: yarn test:e2e:ios:debug || yarn test:e2e:ios:debug
