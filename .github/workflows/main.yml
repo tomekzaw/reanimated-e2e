@@ -53,6 +53,9 @@ jobs:
           api-level: 29
           script: echo "OK"
 
+      - name: Launch Android emulator
+        run: emulator -avd "test(AVD) - 10" &
+
       - name: Launch Metro bundler
         run: yarn start &
 
