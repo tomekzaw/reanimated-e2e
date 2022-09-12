@@ -34,6 +34,10 @@ describe('Appium with Jest automation testing', () => {
     await client.reset(); // it helps the CI
   });
 
+  beforeEach(async () => {
+    await client.reset();
+  });
+
   afterEach(async () => {
     // await client.reset();
 
