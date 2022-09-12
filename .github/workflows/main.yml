@@ -46,5 +46,7 @@ jobs:
       - name: Run Appium server
         run: yarn appium &
 
+      - run: sleep 120
+
       - name: Run iOS E2E tests
-        run: yarn test:e2e:ios:debug || yarn test:e2e:ios:debug
+        run: yarn test:e2e:ios:debug
