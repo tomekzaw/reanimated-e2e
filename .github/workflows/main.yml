@@ -40,17 +40,27 @@ jobs:
             ~/Library/Developer/Xcode/DerivedData
           key: ${{ hashFiles('./ios/Podfile.lock') }}-v4
 
+      - name: Launch Metro bundler
+        run: yarn start &
+
       - name: Build iOS app
         run: yarn build:ios:debug
 
       - name: Run Appium server
         run: yarn appium &
 
+      - name: Poll for Appium Server to Start
+        run: |
+          until $(curl --output /dev/null --silent --head --fail http://127.0.0.1:4723/wd/hub/sessions); do
+            sleep 5
+          done
+
       - name: Install WebDriverAgentRunner
         run: |
           cd ./node_modules/appium-webdriveragent &&
           unzip WebDriverAgentRunner-Runner.app.zip -d WebDriverAgentRunner-Runner.app &&
-          xcrun simctl install "iPhone 13" WebDriverAgentRunner-Runner.app
+          xcrun simctl install "iPhone 13" WebDriverAgentRunner-Runner.app &&
+          xcrun simctl launch "iPhone 13" com.facebook.WebDriverAgentRunner.xctrunner
 
       - name: Run iOS E2E tests
         run: yarn test:e2e:ios:debug
