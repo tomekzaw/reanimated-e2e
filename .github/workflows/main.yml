@@ -43,13 +43,8 @@ jobs:
       - name: Launch Metro bundler
         run: yarn start &
 
-      - name: Run Android emulator
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 29
-
-      - name: Build Android app
-        run: yarn build:android:debug
+      # - name: Build Android app
+      #   run: yarn build:android:debug
 
       # - name: Build iOS app
       #   run: yarn build:ios:debug
@@ -63,6 +58,12 @@ jobs:
             sleep 5
           done
 
+      - name: Run Android emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          script: yarn build:android:debug && yarn test:e2e:android:debug
+
       # - name: Install WebDriverAgentRunner
       #   run: |
       #     cd ./node_modules/appium-webdriveragent &&
@@ -70,8 +71,8 @@ jobs:
       #     xcrun simctl install "iPhone 13" WebDriverAgentRunner-Runner.app &&
       #     xcrun simctl launch "iPhone 13" com.facebook.WebDriverAgentRunner.xctrunner
 
-      - name: Run Android E2E tests
-        run: yarn test:e2e:android:debug
+      # - name: Run Android E2E tests
+      #   run: yarn test:e2e:android:debug
 
       # - name: Run iOS E2E tests
       #   run: yarn test:e2e:ios:debug
