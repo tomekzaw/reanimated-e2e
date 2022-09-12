@@ -39,7 +39,7 @@ describe('Appium with Jest automation testing', () => {
 
     const button = await client.$('~menu');
     await button.click();
-    await client.pause(200);
+    await client.pause(1000);
   });
 
   afterAll(async () => {
@@ -49,7 +49,7 @@ describe('Appium with Jest automation testing', () => {
   async function openTest(name: string) {
     const button = await client.$('~' + name);
     await button.click();
-    await client.pause(200);
+    await client.pause(1000);
   }
 
   test('hello world', async () => {
@@ -68,7 +68,7 @@ describe('Appium with Jest automation testing', () => {
 
     const button = await client.$('~button');
     await button.click();
-    await client.pause(200);
+    await client.pause(1000);
 
     const after = await box.getSize();
     expect(after.width).not.toBe(before.width);
@@ -82,7 +82,7 @@ describe('Appium with Jest automation testing', () => {
 
     const button = await client.$('~Button');
     await button.click();
-    await client.pause(500);
+    await client.pause(2000);
 
     const after = await box.getLocation();
     expect(after.y).not.toBe(before.y);
