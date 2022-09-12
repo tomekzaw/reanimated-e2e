@@ -45,49 +45,25 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: 11
-          cache: 'gradle'
-
-      - name: Setup Android emulator
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 29
-          script: echo "OK"
-
-      - name: Launch Android emulator
-        run: emulator -avd test &
 
       - name: Launch Metro bundler
         run: yarn start &
 
-      - name: Install Appium Settings
-        run: |
-          adb install ./node_modules/io.appium.settings/apks/settings_apk-debug.apk &&
-          adb shell am force-stop com.myapp
-
       - name: Build Android app
         run: yarn build:android:debug
 
-      # - name: Build iOS app
-      #   run: yarn build:ios:debug
-
       - name: Run Appium server
-        run: yarn appium &
-
-      - name: Poll for Appium Server to Start
         run: |
+          yarn appium &
           until $(curl --output /dev/null --silent --head --fail http://127.0.0.1:4723/wd/hub/sessions); do
             sleep 5
           done
 
-      # - name: Install WebDriverAgentRunner
-      #   run: |
-      #     cd ./node_modules/appium-webdriveragent &&
-      #     unzip WebDriverAgentRunner-Runner.app.zip -d WebDriverAgentRunner-Runner.app &&
-      #     xcrun simctl install "iPhone 13" WebDriverAgentRunner-Runner.app &&
-      #     xcrun simctl launch "iPhone 13" com.facebook.WebDriverAgentRunner.xctrunner
-
       - name: Run Android E2E tests
-        run: yarn test:e2e:android:debug
-
-      # - name: Run iOS E2E tests
-      #   run: yarn test:e2e:ios:debug
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          script: |
+            adb install ./node_modules/io.appium.settings/apks/settings_apk-debug.apk &&
+            adb install ./android/app/build/outputs/apk/debug/app-debug.apk &&
+            yarn test:e2e:android:debug
