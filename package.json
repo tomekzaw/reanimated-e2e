@@ -5,7 +5,9 @@
   "scripts": {
     "start": "react-native start",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "build:android:debug": "react-native run-android",
     "build:ios:debug": "react-native run-ios --simulator 'iPhone 13 (15.5)'",
+    "test:e2e:android:debug": "PLATFORM=android jest",
     "test:e2e:ios:debug": "PLATFORM=ios jest"
   },
   "dependencies": {
