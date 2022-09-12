@@ -49,9 +49,6 @@ jobs:
       - name: Launch Metro bundler
         run: yarn start &
 
-      - name: Build Android app
-        run: yarn build:android:debug
-
       - name: Run Appium server
         run: |
           yarn appium &
@@ -65,5 +62,5 @@ jobs:
           api-level: 29
           script: |
             adb install ./node_modules/io.appium.settings/apks/settings_apk-debug.apk &&
-            adb install ./android/app/build/outputs/apk/debug/app-debug.apk &&
+            yarn build:android:debug &&
             yarn test:e2e:android:debug
