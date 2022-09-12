@@ -31,11 +31,7 @@ describe('Appium with Jest automation testing', () => {
     if (!client) {
       fail('Failed to initialize client');
     }
-    await client.reset(); // it helps the CI
-  });
-
-  beforeEach(async () => {
-    await client.reset();
+    // await client.reset(); // it helps the CI
   });
 
   afterEach(async () => {
