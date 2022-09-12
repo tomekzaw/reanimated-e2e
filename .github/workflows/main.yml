@@ -74,6 +74,7 @@ jobs:
       - name: Install Appium Settings
         run: |
           adb install ./node_modules/io.appium.settings/apks/settings_apk-debug.apk &&
+          adb shell am force-stop com.myapp &&
           adb shell monkey -p io.appium.settings -c android.intent.category.LAUNCHER 1
 
       # - name: Install WebDriverAgentRunner
