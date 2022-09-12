@@ -46,7 +46,11 @@ jobs:
       - name: Run Appium server
         run: yarn appium &
 
-      - run: sleep 120
+      - name: Install WebDriverAgentRunner
+        run: |
+          cd ./node_modules/appium-webdriveragent &&
+          unzip WebDriverAgentRunner-Runner.app.zip -d WebDriverAgentRunner-Runner.app &&
+          xcrun simctl install "iPhone 13" WebDriverAgentRunner-Runner.app
 
       - name: Run iOS E2E tests
         run: yarn test:e2e:ios:debug
