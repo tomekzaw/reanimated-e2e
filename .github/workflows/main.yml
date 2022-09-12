@@ -60,4 +60,4 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
-          script: adb install ./node_modules/io.appium.settings/apks/settings_apk-debug.apk && yarn build:android:debug && yarn test:e2e:android:debug
+          script: yarn build:android:debug && sleep 15 && yarn test:e2e:android:debug
