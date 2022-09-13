@@ -10,6 +10,8 @@ on:
 jobs:
   build:
     runs-on: macos-12
+    env:
+      api-level: 29
     steps: 
       - uses: actions/checkout@v3
 
@@ -28,6 +30,27 @@ jobs:
           distribution: 'zulu'
           java-version: 11
 
+      - name: Cache Gradle
+        uses: gradle/gradle-build-action@v2
+        
+      - name: Cache AVD
+        uses: actions/cache@v3
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-api-${{ env.api-level }}
+
+      - name: Create AVD and generate snapshot for caching
+        if: steps.avd-cache.outputs.cache-hit != 'true'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ env.api-level }}
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          script: echo "Generated AVD snapshot for caching."
+
       - name: Launch Metro bundler
         run: yarn start &
 
@@ -41,5 +64,7 @@ jobs:
       - name: Run Android E2E tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 29
+          api-level: ${{ env.api-level }}
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: yarn build:android:debug && sleep 30 && yarn test:e2e:android:debug
