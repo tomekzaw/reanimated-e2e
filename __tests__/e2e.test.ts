@@ -32,8 +32,8 @@ describe('Appium with Jest automation testing', () => {
       fail('Failed to initialize client');
     }
 
-    if (process.env.CI === 'true') {
-      await client.pause(30000); // for Android E2E tests on CI
+    if (process.env.CI === 'true' && process.env.PLATFORM === 'android') {
+      await client.pause(15000); // for Android E2E tests on CI
     }
   });
 

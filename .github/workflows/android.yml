@@ -75,4 +75,4 @@ jobs:
           api-level: ${{ env.api-level }}
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          script: adb install ./node_modules/io.appium.settings/apks/settings_apk-debug.apk && adb install ./android/app/build/outputs/apk/debug/app-debug.apk && adb shell monkey -p io.appium.settings -c android.intent.category.LAUNCHER 1 && adb shell monkey -p com.myapp -c android.intent.category.LAUNCHER 1 && yarn test:e2e:android:debug
+          script: adb install ./android/app/build/outputs/apk/debug/app-debug.apk && adb shell am start -n "com.myapp/.MainActivity" && yarn test:e2e:android:debug
