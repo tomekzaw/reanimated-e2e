@@ -54,13 +54,6 @@ jobs:
       - name: Launch Metro bundler
         run: yarn start &
 
-      - name: Run Appium server
-        run: |
-          yarn appium &
-          until $(curl --output /dev/null --silent --head --fail http://127.0.0.1:4723/wd/hub/sessions); do
-            sleep 5
-          done
-
       - name: Build Android app
         uses: reactivecircus/android-emulator-runner@v2
         with:
@@ -68,6 +61,13 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: yarn build:android:debug
+
+      - name: Run Appium server
+        run: |
+          yarn appium &
+          until $(curl --output /dev/null --silent --head --fail http://127.0.0.1:4723/wd/hub/sessions); do
+            sleep 5
+          done
 
       - name: Run Android E2E tests
         uses: reactivecircus/android-emulator-runner@v2
