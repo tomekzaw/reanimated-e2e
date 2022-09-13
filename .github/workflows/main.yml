@@ -22,24 +22,6 @@ jobs:
       - name: Install node_modules
         run: yarn install --frozen-lockfile
 
-      # - name: Cache Pods
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: ./ios/Pods
-      #     key: ${{ hashFiles('./ios/Podfile.lock') }}
-
-      # - name: Install Pods
-      #   working-directory: ios
-      #   run: pod install
-
-      # - name: Cache build
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: |
-      #       ./ios/build
-      #       ~/Library/Developer/Xcode/DerivedData
-      #     key: ${{ hashFiles('./ios/Podfile.lock') }}-v4
-
       - name: Setup Java 11
         uses: actions/setup-java@v3
         with:
@@ -60,4 +42,4 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
-          script: adb install ./node_modules/io.appium.settings/apks/settings_apk-debug.apk && yarn build:android:debug && sleep 30 && yarn test:e2e:android:debug
+          script: yarn build:android:debug && sleep 30 && yarn test:e2e:android:debug
