@@ -61,10 +61,18 @@ jobs:
             sleep 5
           done
 
-      - name: Build Android app & Run Android E2E tests
+      - name: Build Android app
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: ${{ env.api-level }}
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          script: yarn build:android:debug && sleep 15 && yarn test:e2e:android:debug
+          script: yarn build:android:debug
+
+      - name: Run Android E2E tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ env.api-level }}
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          script: adb shell am start -n "com.myapp/.MainActivity" && sleep 15 && yarn test:e2e:android:debug
