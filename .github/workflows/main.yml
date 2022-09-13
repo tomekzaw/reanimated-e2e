@@ -75,4 +75,4 @@ jobs:
           api-level: ${{ env.api-level }}
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          script: adb shell am start -n "com.myapp/.MainActivity" && sleep 15 && yarn test:e2e:android:debug
+          script: adb install ./android/app/build/outputs/apk/debug/app-debug.apk && adb shell am start -n "com.myapp/.MainActivity" && sleep 15 && yarn test:e2e:android:debug
