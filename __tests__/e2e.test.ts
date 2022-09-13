@@ -70,7 +70,7 @@ describe('Appium with Jest automation testing', () => {
 
     const button = await client.$('~button');
     await button.click();
-    await client.pause(1000);
+    await client.pause(3000);
 
     const after = await client.takeElementScreenshot(box.elementId);
 
