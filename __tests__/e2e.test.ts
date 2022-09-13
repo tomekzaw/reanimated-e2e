@@ -31,14 +31,6 @@ describe('Appium with Jest automation testing', () => {
     if (!client) {
       fail('Failed to initialize client');
     }
-
-    for (let i = 0; i < 60; i++) {
-      try {
-        await client.$('~HelloWorld');
-      } catch (e) {
-        await client.pause(1000);
-      }
-    }
   });
 
   afterEach(async () => {
@@ -65,6 +57,22 @@ describe('Appium with Jest automation testing', () => {
     const text = await client.$('~text');
     const string = await text.getText();
     expect(string).toBe('Hello world!');
+  });
+
+  test('interpolate background color', async () => {
+    await openTest('InterpolateBackgroundColor');
+
+    const box = await client.$('~box');
+    const before = await client.takeElementScreenshot(box.elementId);
+
+    const button = await client.$('~button');
+    await button.click();
+    await client.pause(1000);
+
+    const after = await client.takeElementScreenshot(box.elementId);
+
+    // TODO: compare pixel colors
+    expect(before).not.toBe(after);
   });
 
   test('animate width', async () => {

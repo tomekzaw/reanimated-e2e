@@ -1,12 +1,8 @@
 import {Button, StyleSheet, View} from 'react-native';
 
-import {AnimateWidth} from './screens/AnimateWidth';
-import {HelloWorld} from './screens/HelloWorld';
 import React from 'react';
-import {ScrollTo} from './screens/ScrollTo';
+import {TESTS} from './screens/tests';
 import {testProps} from './utils';
-
-const TESTS = [HelloWorld, AnimateWidth, ScrollTo];
 
 export default function App() {
   const [currentTest, setCurrentTest] = React.useState<() => JSX.Element>();
