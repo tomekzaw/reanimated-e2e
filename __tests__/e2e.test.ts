@@ -31,6 +31,14 @@ describe('Appium with Jest automation testing', () => {
     if (!client) {
       fail('Failed to initialize client');
     }
+
+    for (let i = 0; i < 60; i++) {
+      try {
+        await client.$('~HelloWorld');
+      } catch (e) {
+        await client.pause(1000);
+      }
+    }
   });
 
   afterEach(async () => {
