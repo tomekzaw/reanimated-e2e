@@ -67,4 +67,4 @@ jobs:
           api-level: ${{ env.api-level }}
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          script: yarn build:android:debug && sleep 30 && yarn test:e2e:android:debug
+          script: yarn build:android:debug && yarn test:e2e:android:debug
