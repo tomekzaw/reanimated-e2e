@@ -12,6 +12,7 @@ jobs:
     runs-on: macos-12
     env:
       api-level: 29
+      emulator-options: -no-snapshot -noaudio -no-boot-anim -camera-back none
     steps: 
       - uses: actions/checkout@v3
 
@@ -40,7 +41,7 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-          key: avd-api-${{ env.api-level }}-v2
+          key: avd-api-${{ env.api-level }}-v3
 
       - name: Create AVD and generate snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
@@ -48,6 +49,7 @@ jobs:
         with:
           api-level: ${{ env.api-level }}
           force-avd-creation: false
+          emulator-options: ${{ env.emulator-options }}
           script: echo "Generated AVD snapshot for caching."
 
       - name: Launch Metro bundler
@@ -58,6 +60,7 @@ jobs:
         with:
           api-level: ${{ env.api-level }}
           force-avd-creation: false
+          emulator-options: ${{ env.emulator-options }}
           script: yarn build:android:debug
 
       - name: Run Appium server
@@ -72,4 +75,5 @@ jobs:
         with:
           api-level: ${{ env.api-level }}
           force-avd-creation: false
+          emulator-options: ${{ env.emulator-options }}
           script: adb install ./android/app/build/outputs/apk/debug/app-debug.apk && adb shell am start -n "com.myapp/.MainActivity" && yarn test:e2e:android:debug
