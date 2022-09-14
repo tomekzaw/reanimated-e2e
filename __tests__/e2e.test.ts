@@ -67,11 +67,12 @@ describe('Appium with Jest automation testing', () => {
     await openTest('InterpolateBackgroundColor');
 
     const box = await client.$('~box');
+    const button = await client.$('~button');
+
     const before = await client.takeElementScreenshot(box.elementId);
 
-    const button = await client.$('~button');
     await button.click();
-    await client.pause(3000);
+    await client.pause(2000);
 
     const after = await client.takeElementScreenshot(box.elementId);
 
@@ -82,28 +83,36 @@ describe('Appium with Jest automation testing', () => {
   test('animate width', async () => {
     await openTest('AnimateWidth');
 
-    const box = await client.$('~box');
-    const before = await box.getSize();
-
+    const box1 = await client.$('~box1');
+    const box2 = await client.$('~box2');
     const button = await client.$('~button');
+
+    const before1 = await box1.getSize();
+    const before2 = await box2.getSize();
+
     await button.click();
     await client.pause(1000);
 
-    const after = await box.getSize();
-    expect(after.width).not.toBe(before.width);
+    const after1 = await box1.getSize();
+    const after2 = await box2.getSize();
+
+    expect(after1.width).not.toBe(before1.width);
+    expect(after2.width).not.toBe(before2.width);
   });
 
   test('scroll to', async () => {
     await openTest('ScrollTo');
 
     const box = await client.$('~box-orange'); // for some reason it doesn't work with ~box-red
+    const button = await client.$('~Button');
+
     const before = await box.getLocation();
 
-    const button = await client.$('~Button');
     await button.click();
     await client.pause(2000);
 
     const after = await box.getLocation();
+
     expect(after.y).not.toBe(before.y);
   });
 });
