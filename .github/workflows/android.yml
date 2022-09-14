@@ -12,7 +12,7 @@ jobs:
     runs-on: macos-12
     env:
       api-level: 29
-      emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+      emulator-options: -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
     steps: 
       - uses: actions/checkout@v3
 
@@ -41,7 +41,7 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-          key: avd-api-${{ env.api-level }}-v4
+          key: avd-api-${{ env.api-level }}-v5
 
       - name: Create AVD and generate snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
