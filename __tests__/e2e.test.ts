@@ -77,7 +77,7 @@ describe('Appium with Jest automation testing', () => {
     const after = await client.takeElementScreenshot(box.elementId);
 
     // TODO: fix Android on CI
-    if (process.env.PLATFORM !== 'ios') {
+    if (process.env.PLATFORM === 'ios') {
       // TODO: compare pixel colors
       expect(before).not.toBe(after);
     }
