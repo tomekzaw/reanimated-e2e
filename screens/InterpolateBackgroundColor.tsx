@@ -14,8 +14,6 @@ export function InterpolateBackgroundColor() {
 
   const box = useAnimatedStyle(() => {
     const backgroundColor = interpolateColor(sv.value, [0, 1], ['red', 'blue']);
-    console.log(sv.value);
-    console.log(backgroundColor);
     return {backgroundColor};
   });
 
