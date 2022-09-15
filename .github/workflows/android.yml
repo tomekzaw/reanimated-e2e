@@ -30,8 +30,8 @@ jobs:
           distribution: 'zulu'
           java-version: 11
 
-      - name: Cache Gradle
-        uses: gradle/gradle-build-action@v2
+      # - name: Cache Gradle
+      #   uses: gradle/gradle-build-action@v2
         
       - name: Cache AVD
         uses: actions/cache@v3
@@ -54,13 +54,13 @@ jobs:
       - name: Launch Metro bundler
         run: yarn start &
 
-      - name: Build Android app
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: ${{ env.api-level }}
-          force-avd-creation: false
-          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          script: yarn build:android:debug
+      # - name: Build Android app
+      #   uses: reactivecircus/android-emulator-runner@v2
+      #   with:
+      #     api-level: ${{ env.api-level }}
+      #     force-avd-creation: false
+      #     emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+      #     script: yarn build:android:debug
 
       - name: Run Appium server
         run: |
@@ -75,10 +75,4 @@ jobs:
           api-level: ${{ env.api-level }}
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          script: adb install ./android/app/build/outputs/apk/debug/app-debug.apk && adb shell am start -n "com.myapp/.MainActivity" && yarn test:e2e:android:debug
-
-      - name: Archive apk
-        uses: actions/upload-artifact@v3
-        with:
-          name: apk
-          path: ./android/app/build/outputs/apk/debug/app-debug.apk
+          script: adb install app-debug.apk && adb shell am start -n "com.myapp/.MainActivity" && yarn test:e2e:android:debug
