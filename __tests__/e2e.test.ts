@@ -80,15 +80,14 @@ describe('Appium with Jest automation testing', () => {
   test('interpolate background color', async () => {
     await openTest('InterpolateBackgroundColor');
 
-    const box = await client.$('~box');
     const button = await client.$('~button');
 
-    const before = await client.takeElementScreenshot(box.elementId);
+    const before = await client.takeScreenshot();
 
     await button.click();
     await client.pause(2500);
 
-    const after = await client.takeElementScreenshot(box.elementId);
+    const after = await client.takeScreenshot();
 
     // TODO: compare pixel colors
     expect(before).not.toBe(after);
