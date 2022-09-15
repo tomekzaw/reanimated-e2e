@@ -9,7 +9,7 @@ describe('Appium with Jest automation testing', () => {
 
   beforeAll(async () => {
     await initializeClient();
-    await waitForApp();
+    await waitForApp(); // it helps on the CI
   });
 
   async function initializeClient() {
@@ -90,11 +90,8 @@ describe('Appium with Jest automation testing', () => {
 
     const after = await client.takeElementScreenshot(box.elementId);
 
-    // TODO: fix Android on CI
-    if (process.env.PLATFORM === 'ios') {
-      // TODO: compare pixel colors
-      expect(before).not.toBe(after);
-    }
+    // TODO: compare pixel colors
+    expect(before).not.toBe(after);
   });
 
   test('animate width', async () => {
