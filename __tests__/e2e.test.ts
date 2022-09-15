@@ -8,6 +8,11 @@ describe('Appium with Jest automation testing', () => {
   let client: WebdriverIO.Browser<'async'>;
 
   beforeAll(async () => {
+    await initializeClient();
+    await waitForApp();
+  });
+
+  async function initializeClient() {
     const android = {
       platformName: 'Android',
       app: './android/app/build/outputs/apk/debug/app-debug.apk',
@@ -31,11 +36,20 @@ describe('Appium with Jest automation testing', () => {
     if (!client) {
       fail('Failed to initialize client');
     }
+  }
 
-    if (process.env.CI === 'true') {
-      await client.pause(15000); // it helps the CI
+  async function waitForApp() {
+    for (let i = 0; i < 60; i++) {
+      const button = await client.$('~HelloWorld');
+      try {
+        await button.getText();
+        return;
+      } catch (e) {
+        await client.pause(1000);
+      }
     }
-  });
+    fail('App is not launched');
+  }
 
   afterEach(async () => {
     // await client.reset();
