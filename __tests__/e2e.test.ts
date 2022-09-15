@@ -16,6 +16,7 @@ describe('Appium with Jest automation testing', () => {
     const android = {
       platformName: 'Android',
       app: './android/app/build/outputs/apk/debug/app-debug.apk',
+      automationName: 'UiAutomator2',
     };
 
     const ios = {
