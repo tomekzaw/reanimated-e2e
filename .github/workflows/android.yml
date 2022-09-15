@@ -77,5 +77,5 @@ jobs:
         with:
           api-level: ${{ env.api-level }}
           force-avd-creation: false
-          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          emulator-options: -no-snapshot-save -no-window -noaudio -no-boot-anim -camera-back none
           script: adb install ./android/app/build/outputs/apk/debug/app-debug.apk && adb shell monkey -p com.myapp -c android.intent.category.LAUNCHER 1 && yarn test:e2e:android:debug
