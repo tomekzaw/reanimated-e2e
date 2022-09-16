@@ -4,8 +4,8 @@ import {InterpolateBackgroundColor} from './InterpolateBackgroundColor';
 import {ScrollTo} from './ScrollTo';
 
 export const TESTS = [
-  HelloWorld,
-  InterpolateBackgroundColor,
-  AnimateWidth,
-  ScrollTo,
+  {name: 'HelloWorld', component: HelloWorld},
+  {name: 'InterpolateBackgroundColor', component: InterpolateBackgroundColor},
+  {name: 'AnimateWidth', component: AnimateWidth},
+  {name: 'ScrollTo', component: ScrollTo},
 ];

@@ -15,14 +15,17 @@ describe('Appium with Jest automation testing', () => {
   async function initializeClient() {
     const android = {
       platformName: 'Android',
-      app: './android/app/build/outputs/apk/debug/app-debug.apk',
+      app:
+        process.env.VARIANT === 'debug'
+          ? './android/app/build/outputs/apk/debug/app-debug.apk'
+          : './android/app/build/outputs/apk/release/app-release.apk',
       automationName: 'UiAutomator2',
     };
 
     const ios = {
       platformName: 'iOS',
-      deviceName: 'iPhone 13',
-      platformVersion: '15.5',
+      deviceName: process.env.CI === 'true' ? 'iPhone 13' : 'iPhone 14 Pro Max',
+      platformVersion: process.env.CI === 'true' ? '15.5' : '16.0',
       bundleId: 'org.reactjs.native.example.MyApp',
       automationName: 'XCUITest',
     };
@@ -40,7 +43,7 @@ describe('Appium with Jest automation testing', () => {
   }
 
   async function waitForApp() {
-    for (let i = 0; i < 60; i++) {
+    for (let i = 0; i < 30; i++) {
       const button = await client.$('~HelloWorld');
       try {
         await button.getText();

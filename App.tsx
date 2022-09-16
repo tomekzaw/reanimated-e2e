@@ -24,7 +24,7 @@ export default function App() {
             key={test.name}
             title={test.name}
             {...testProps(test.name)}
-            onPress={() => setCurrentTest(() => test)}
+            onPress={() => setCurrentTest(() => test.component)}
           />
         ))
       )}

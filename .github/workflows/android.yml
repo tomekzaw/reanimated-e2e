@@ -61,7 +61,7 @@ jobs:
           api-level: ${{ env.api-level }}
           force-avd-creation: false
           emulator-options: -no-snapshot-save ${{ env.emulator-options }}
-          script: yarn build:android:debug --variant=release
+          script: yarn build:android:release
 
       - name: Run Appium server
         run: |
@@ -76,4 +76,4 @@ jobs:
           api-level: ${{ env.api-level }}
           force-avd-creation: false
           emulator-options: -no-snapshot-save ${{ env.emulator-options }}
-          script: yarn test:e2e:android:debug
+          script: yarn test:e2e:android:release
