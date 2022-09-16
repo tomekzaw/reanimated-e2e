@@ -13,6 +13,9 @@ jobs:
     env:
       api-level: 29
       emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+    strategy:
+      matrix:
+        variant: ['debug', 'release']
     steps: 
       - uses: actions/checkout@v3
 
@@ -52,8 +55,9 @@ jobs:
           emulator-options: ${{ env.emulator-options }}
           script: echo "Generated AVD snapshot for caching."
 
-      # - name: Launch Metro bundler
-      #   run: yarn start &
+      - name: Launch Metro bundler
+        if: ${{ matrix.variant == 'debug' }}
+        run: yarn start &
 
       - name: Build Android app
         uses: reactivecircus/android-emulator-runner@v2
@@ -61,7 +65,7 @@ jobs:
           api-level: ${{ env.api-level }}
           force-avd-creation: false
           emulator-options: -no-snapshot-save ${{ env.emulator-options }}
-          script: yarn build:android:release
+          script: yarn build:android:${{ matrix.variant }}
 
       - name: Run Appium server
         run: |
@@ -76,4 +80,4 @@ jobs:
           api-level: ${{ env.api-level }}
           force-avd-creation: false
           emulator-options: -no-snapshot-save ${{ env.emulator-options }}
-          script: yarn test:e2e:android:release
+          script: yarn test:e2e:android:${{ matrix.variant }}

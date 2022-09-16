@@ -10,6 +10,9 @@ on:
 jobs:
   build:
     runs-on: macos-12
+    strategy:
+      matrix:
+        variant: ['debug', 'release']
     steps: 
       - uses: actions/checkout@v3
 
@@ -41,10 +44,11 @@ jobs:
           key: build-${{ hashFiles('./ios/Podfile.lock') }}
 
       - name: Launch Metro bundler
+        if: ${{ matrix.variant == 'debug' }}
         run: yarn start &
 
       - name: Build iOS app
-        run: yarn build:ios:release --simulator 'iPhone 13 (15.5)'
+        run: yarn build:ios:${{ matrix.variant }} --simulator 'iPhone 13 (15.5)'
 
       - name: Run Appium server
         run: |
@@ -61,4 +65,4 @@ jobs:
           xcrun simctl launch "iPhone 13" com.facebook.WebDriverAgentRunner.xctrunner
 
       - name: Run iOS E2E tests
-        run: yarn test:e2e:ios:release
+        run: yarn test:e2e:ios:${{ matrix.variant }}
