@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches: ['appium']
+  pull_request:
+    branches: ['appium']
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-12
+    steps: 
+      - uses: actions/checkout@v3
+
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: ./node_modules
+          key: ${{ hashFiles('./yarn.lock') }}
+
+      - name: Install node_modules
+        run: yarn install --frozen-lockfile
+
+      - name: Cache Pods
+        uses: actions/cache@v3
+        with:
+          path: ./ios/Pods
+          key: pods-${{ hashFiles('./ios/Podfile.lock') }}
+
+      - name: Install Pods
+        working-directory: ios
+        run: pod install
+
+      - name: Cache build
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./ios/build
+            ~/Library/Developer/Xcode/DerivedData
+          key: build-${{ hashFiles('./ios/Podfile.lock') }}
+
+      - name: Launch Metro bundler
+        run: yarn start &
+
+      - name: Build iOS app
+        run: yarn build:ios:debug
+
+      - name: Run Appium server
+        run: |
+          yarn appium &
+          until $(curl --output /dev/null --silent --head --fail http://127.0.0.1:4723/wd/hub/sessions); do
+            sleep 5
+          done
+
+      - name: Install WebDriverAgentRunner
+        run: |
+          cd ./node_modules/appium-webdriveragent &&
+          unzip WebDriverAgentRunner-Runner.app.zip -d WebDriverAgentRunner-Runner.app &&
+          xcrun simctl install "iPhone 13" WebDriverAgentRunner-Runner.app &&
+          xcrun simctl launch "iPhone 13" com.facebook.WebDriverAgentRunner.xctrunner
+
+      - name: Run iOS E2E tests
+        run: yarn test:e2e:ios:debug
