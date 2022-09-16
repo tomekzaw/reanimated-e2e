@@ -37,7 +37,9 @@ describe('Appium with Jest automation testing', () => {
     };
 
     client = await WebdriverIO.remote(opts);
-    client = await WebdriverIO.remote(opts); // for some reason on CI it works on the second time
+    if (process.env.CI === 'true') {
+      client = await WebdriverIO.remote(opts); // for some reason on CI it works on the second time
+    }
     if (!client) {
       fail('Failed to initialize client');
     }
