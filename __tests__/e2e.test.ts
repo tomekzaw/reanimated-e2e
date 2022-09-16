@@ -37,7 +37,11 @@ describe('Appium with Jest automation testing', () => {
     };
 
     client = await WebdriverIO.remote(opts);
-    if (process.env.CI === 'true') {
+    if (
+      process.env.CI === 'true' &&
+      process.env.PLATFORM === 'ios' &&
+      process.env.VARIANT === 'release'
+    ) {
       client = await WebdriverIO.remote(opts); // for some reason on CI it works on the second time
     }
     if (!client) {
