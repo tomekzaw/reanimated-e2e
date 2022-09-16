@@ -78,4 +78,4 @@ jobs:
           api-level: ${{ env.api-level }}
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -noaudio -no-boot-anim -camera-back none
-          script: sleep 60 && yarn test:e2e:android:debug
+          script: adb install node_modules/appium-uiautomator2-server/apks/appium-uiautomator2-server-v4.29.1.apk && adb install ./android/app/build/outputs/apk/debug/app-debug.apk && sleep 30 && yarn test:e2e:android:debug
