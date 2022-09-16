@@ -41,7 +41,7 @@ jobs:
           path: |
             ./ios/build
             ~/Library/Developer/Xcode/DerivedData
-          key: build-${{ hashFiles('./ios/Podfile.lock') }}
+          key: build-${{ matrix.variant }}-${{ hashFiles('./ios/Podfile.lock') }}
 
       - name: Launch Metro bundler
         if: ${{ matrix.variant == 'debug' }}
