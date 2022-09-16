@@ -46,7 +46,7 @@ describe('Appium with Jest automation testing', () => {
         await button.getText();
         return;
       } catch (e) {
-        await client.pause(1000);
+        await client.pause(5_000);
       }
     }
     fail('App is not launched');
@@ -54,6 +54,7 @@ describe('Appium with Jest automation testing', () => {
 
   afterEach(async () => {
     // await client.reset();
+    // await waitForApp();
 
     const button = await client.$('~menu');
     await button.click();

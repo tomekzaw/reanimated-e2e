@@ -12,6 +12,7 @@ jobs:
     runs-on: macos-12
     env:
       api-level: 29
+      emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
     steps: 
       - uses: actions/checkout@v3
 
@@ -30,37 +31,37 @@ jobs:
           distribution: 'zulu'
           java-version: 11
 
-      # - name: Cache Gradle
-      #   uses: gradle/gradle-build-action@v2
+      - name: Cache Gradle
+        uses: gradle/gradle-build-action@v2
         
-      # - name: Cache AVD
-      #   uses: actions/cache@v3
-      #   id: avd-cache
-      #   with:
-      #     path: |
-      #       ~/.android/avd/*
-      #       ~/.android/adb*
-      #     key: avd-api-${{ env.api-level }}-v9
+      - name: Cache AVD
+        uses: actions/cache@v3
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-api-${{ env.api-level }}-v10
 
-      # - name: Create AVD and generate snapshot for caching
-      #   if: steps.avd-cache.outputs.cache-hit != 'true'
-      #   uses: reactivecircus/android-emulator-runner@v2
-      #   with:
-      #     api-level: ${{ env.api-level }}
-      #     force-avd-creation: false
-      #     emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-      #     script: echo "Generated AVD snapshot for caching."
+      - name: Create AVD and generate snapshot for caching
+        if: steps.avd-cache.outputs.cache-hit != 'true'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ env.api-level }}
+          force-avd-creation: false
+          emulator-options: ${{ env.emulator-options }}
+          script: echo "Generated AVD snapshot for caching."
 
       - name: Launch Metro bundler
         run: yarn start &
 
-      # - name: Build Android app
-      #   uses: reactivecircus/android-emulator-runner@v2
-      #   with:
-      #     api-level: ${{ env.api-level }}
-      #     force-avd-creation: false
-      #     emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-      #     script: yarn build:android:debug
+      - name: Build Android app
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ env.api-level }}
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save ${{ env.emulator-options }}
+          script: yarn build:android:debug
 
       - name: Run Appium server
         run: |
@@ -69,13 +70,10 @@ jobs:
             sleep 5
           done
 
-      - name: Copy app
-        run: mkdir -p ./android/app/build/outputs/apk/debug && cp app-debug.apk ./android/app/build/outputs/apk/debug/app-debug.apk
-
       - name: Run Android E2E tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: ${{ env.api-level }}
           force-avd-creation: false
-          emulator-options: -no-snapshot-save -no-window -noaudio -no-boot-anim -camera-back none
+          emulator-options: -no-snapshot-save ${{ env.emulator-options }}
           script: yarn test:e2e:android:debug
