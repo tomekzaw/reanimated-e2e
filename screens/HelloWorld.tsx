@@ -7,7 +7,8 @@ import {testProps} from '../utils';
 
 function getPlatform() {
   // @ts-ignore
-  return `${Platform.constants.systemName} ${Platform.Version}`;
+  const os = Platform.constants.systemName || Platform.constants.Brand;
+  return `${os} ${Platform.Version}`;
 }
 
 function getRuntime() {
