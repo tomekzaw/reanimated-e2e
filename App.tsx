@@ -9,28 +9,27 @@ export default function App() {
   const [currentTest, setCurrentTest] = React.useState<() => JSX.Element>();
 
   return (
-    <GestureHandlerRootView>
-      <View style={styles.container}>
-        {currentTest !== undefined ? (
-          <>
-            {React.createElement(currentTest)}
-            <Button
-              title="Menu"
-              {...testProps('menu')}
-              onPress={() => setCurrentTest(undefined)}
-            />
-          </>
-        ) : (
-          TESTS.map(test => (
-            <Button
-              key={test.name}
-              title={test.name}
-              {...testProps(test.name)}
-              onPress={() => setCurrentTest(() => test.component)}
-            />
-          ))
-        )}
-      </View>
+    <GestureHandlerRootView style={styles.container}>
+      {currentTest !== undefined ? (
+        <>
+          {React.createElement(currentTest)}
+          <Button
+            title="Menu"
+            {...testProps('menu')}
+            onPress={() => setCurrentTest(undefined)}
+          />
+          <View style={styles.vspace} />
+        </>
+      ) : (
+        TESTS.map(test => (
+          <Button
+            key={test.name}
+            title={test.name}
+            {...testProps(test.name)}
+            onPress={() => setCurrentTest(() => test.component)}
+          />
+        ))
+      )}
     </GestureHandlerRootView>
   );
 }
@@ -40,5 +39,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  vspace: {
+    height: 20,
   },
 });
