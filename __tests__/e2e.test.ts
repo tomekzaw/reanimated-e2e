@@ -163,13 +163,13 @@ describe('Appium with Jest automation testing', () => {
       {action: 'wait', options: {ms: 100}},
       {action: 'moveTo', options: {x: 100, y: 100}},
       {action: 'wait', options: {ms: 500}},
-      {action: 'moveTo', options: {x: 400, y: 100}},
+      {action: 'moveTo', options: {x: 300, y: 100}},
       {action: 'wait', options: {ms: 100}},
       {action: 'release'},
     ]);
     await client.pause(500);
 
     const after = await ball.getLocation();
-    expect(after.x).toEqual(300);
+    expect(after.x).toEqual(200);
   });
 });
