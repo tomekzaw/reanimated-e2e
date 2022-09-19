@@ -1,4 +1,4 @@
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import {Platform, Text} from 'react-native';
 
 import React from 'react';
 import {version as reactNativeVersion} from 'react-native/package.json';
@@ -20,21 +20,13 @@ function getArchitecture() {
 
 export function HelloWorld() {
   return (
-    <View style={styles.container}>
+    <>
       <Text {...testProps('text')}>Hello world!</Text>
       <Text>React Native version: {reactNativeVersion}</Text>
       <Text>Reanimated version: {reanimatedVersion}</Text>
       <Text>Platform: {getPlatform()}</Text>
       <Text>Architecture: {getArchitecture()}</Text>
       <Text>Runtime: {getRuntime()}</Text>
-    </View>
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

@@ -1,5 +1,8 @@
 import * as WebdriverIO from 'webdriverio';
 
+import {TouchAction} from 'webdriverio';
+import touchAction from 'webdriverio/build/commands/element/touchAction';
+
 if (process.env.PLATFORM !== 'android' && process.env.PLATFORM !== 'ios') {
   fail('`PLATFORM` must be either "android" or "ios".');
 }
@@ -89,8 +92,8 @@ describe('Appium with Jest automation testing', () => {
     expect(string).toBe('Hello world!');
   });
 
-  test('interpolate background color', async () => {
-    await openTest('InterpolateBackgroundColor');
+  test('animate background color', async () => {
+    await openTest('AnimateBackgroundColor');
 
     const button = await client.$('~button');
 
@@ -143,5 +146,30 @@ describe('Appium with Jest automation testing', () => {
     const after = await box.getLocation();
 
     expect(after.y).not.toBe(before.y);
+  });
+
+  test('integration with react-native-gesture-handler', async () => {
+    await openTest('GestureHandlerDragDrop');
+
+    const ball = await client.$('~ball');
+
+    const before = await ball.getLocation();
+    expect(before.x).toEqual(0);
+
+    await client.touchPerform([
+      {action: 'press', options: {x: 100, y: 100}},
+      {action: 'wait', options: {ms: 100}},
+      {action: 'moveTo', options: {x: 100, y: 101}}, // this is just to activate the gesture in y-axis, so the result in x-axis is correct
+      {action: 'wait', options: {ms: 100}},
+      {action: 'moveTo', options: {x: 100, y: 100}},
+      {action: 'wait', options: {ms: 500}},
+      {action: 'moveTo', options: {x: 400, y: 100}},
+      {action: 'wait', options: {ms: 100}},
+      {action: 'release'},
+    ]);
+    await client.pause(500);
+
+    const after = await ball.getLocation();
+    expect(after.x).toEqual(300);
   });
 });

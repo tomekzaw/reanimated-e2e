@@ -23,7 +23,7 @@ export function ScrollTo() {
   };
 
   return (
-    <View style={styles.container}>
+    <>
       <ScrollView ref={ref} {...testProps('ScrollView')}>
         {COLORS.map(color => (
           <View
@@ -34,16 +34,11 @@ export function ScrollTo() {
         ))}
       </ScrollView>
       <Button title="Button" onPress={scroll} {...testProps('Button')} />
-    </View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   box: {
     width: 200,
     height: 200,

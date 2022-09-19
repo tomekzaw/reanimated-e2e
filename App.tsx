@@ -1,4 +1,4 @@
-import {Button, StyleSheet, View} from 'react-native';
+import {Button, StyleSheet} from 'react-native';
 
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import React from 'react';
@@ -18,7 +18,6 @@ export default function App() {
             {...testProps('menu')}
             onPress={() => setCurrentTest(undefined)}
           />
-          <View style={styles.vspace} />
         </>
       ) : (
         TESTS.map(test => (
@@ -37,10 +36,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  vspace: {
-    height: 20,
+    paddingVertical: 100,
   },
 });
