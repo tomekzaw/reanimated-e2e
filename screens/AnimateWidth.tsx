@@ -31,7 +31,7 @@ export function AnimateWidth() {
 const styles = StyleSheet.create({
   wrapper: {
     width: 400,
-    height: 200,
+    height: 100,
     flexDirection: 'row',
   },
   box1: {

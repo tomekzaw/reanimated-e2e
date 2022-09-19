@@ -132,6 +132,22 @@ describe('Appium with Jest automation testing', () => {
     expect(after2.width).not.toBe(before2.width);
   });
 
+  test('animate text', async () => {
+    await openTest('AnimateText');
+
+    const text = await client.$('~text');
+    const button = await client.$('~button');
+
+    const before = await text.getText();
+    expect(before).toEqual('0');
+
+    await button.click();
+    await client.pause(1000);
+
+    const after = await text.getText();
+    expect(after).toEqual('100');
+  });
+
   test('scroll to', async () => {
     await openTest('ScrollTo');
 
