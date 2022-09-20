@@ -33,7 +33,7 @@ jobs:
 
       - name: Install Pods
         working-directory: ios
-        run: pod install
+        run: RCT_NEW_ARCH_ENABLED=1 pod install
 
       - name: Cache build
         uses: actions/cache@v3
