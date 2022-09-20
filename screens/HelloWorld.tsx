@@ -16,7 +16,7 @@ function getRuntime() {
 }
 
 function getArchitecture() {
-  return '_nativeFabricUIManager' in global ? 'Fabric' : 'Paper';
+  return 'nativeFabricUIManager' in global ? 'Fabric' : 'Paper';
 }
 
 export function HelloWorld() {
