@@ -14,7 +14,7 @@ MainComponentsRegistry::MainComponentsRegistry(ComponentFactory *delegate) {}
 std::shared_ptr<ComponentDescriptorProviderRegistry const>
 MainComponentsRegistry::sharedProviderRegistry() {
   auto providerRegistry = CoreComponentsRegistry::sharedProviderRegistry();
-  
+
   // Autolinked providers registered by RN CLI
   rncli_registerProviders(providerRegistry);
 
