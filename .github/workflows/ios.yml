@@ -29,11 +29,17 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ./ios/Pods
-          key: pods-${{ hashFiles('./ios/Podfile.lock') }}
+          key: pods-${{ matrix.variant }}-${{ hashFiles('./ios/Podfile.lock') }}
 
       - name: Install Pods
+        if: ${{ matrix.variant == 'debug' }}
         working-directory: ios
         run: RCT_NEW_ARCH_ENABLED=1 pod install
+
+      - name: Install Pods
+        if: ${{ matrix.variant == 'release' }}
+        working-directory: ios
+        run: PRODUCTION=1 RCT_NEW_ARCH_ENABLED=1 pod install
 
       - name: Cache build
         uses: actions/cache@v3
