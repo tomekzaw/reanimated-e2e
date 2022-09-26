@@ -1,8 +1,5 @@
 import * as WebdriverIO from 'webdriverio';
 
-import {TouchAction} from 'webdriverio';
-import touchAction from 'webdriverio/build/commands/element/touchAction';
-
 if (process.env.PLATFORM !== 'android' && process.env.PLATFORM !== 'ios') {
   fail('`PLATFORM` must be either "android" or "ios".');
 }
@@ -192,4 +189,32 @@ describe('Appium with Jest automation testing', () => {
     const after = await ball.getLocation();
     expect(after.x).toEqual(200);
   });
+
+  if (process.env.VARIANT === 'debug') {
+    test('reload once', async () => {
+      await openTest('Reload');
+      await client.pause(1500); // wait until animation ends
+
+      const button = await client.$('~button');
+      await button.click(); // reload app
+      waitForApp();
+
+      await openTest('Reload');
+      await client.pause(1500); // wait until animation ends
+    });
+
+    test.each([2, 5])('reload %d times', async n => {
+      for (let i = 0; i < n; i++) {
+        await openTest('Reload');
+        await client.pause(1500); // wait until animation ends
+
+        const button = await client.$('~button');
+        await button.click(); // reload app
+        waitForApp();
+      }
+
+      await openTest('Reload');
+      await client.pause(1500); // wait until animation ends
+    });
+  }
 });
