@@ -17,8 +17,9 @@ jobs:
       fail-fast: false
       matrix:
         variant: ['debug', 'release']
-    steps: 
-      - uses: actions/checkout@v3
+    steps:
+      - name: Checkout Git repository
+        uses: actions/checkout@v3
 
       - name: Cache node_modules
         uses: actions/cache@v3
@@ -37,7 +38,7 @@ jobs:
 
       - name: Cache Gradle
         uses: gradle/gradle-build-action@v2
-        
+
       - name: Cache AVD
         uses: actions/cache@v3
         id: avd-cache

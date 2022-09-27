@@ -1,5 +1,4 @@
 import Animated, {
-  interpolateColor,
   useAnimatedStyle,
   useSharedValue,
   withRepeat,
@@ -15,12 +14,14 @@ export function Reload() {
 
   useEffect(() => {
     sv.value = 0;
-    sv.value = withRepeat(withTiming(1), -1, false);
+    sv.value = withRepeat(withTiming(1), -1, true);
   }, [sv]);
 
   const box = useAnimatedStyle(() => {
-    const backgroundColor = interpolateColor(sv.value, [0, 1], ['red', 'lime']);
-    return {backgroundColor};
+    return {
+      backgroundColor: 'lime',
+      opacity: sv.value,
+    };
   });
 
   const handlePress = () => {
