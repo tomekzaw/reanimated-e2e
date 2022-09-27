@@ -13,11 +13,7 @@ export function AnimateBackgroundColor() {
   const sv = useSharedValue(0);
 
   const box = useAnimatedStyle(() => {
-    const backgroundColor = interpolateColor(
-      sv.value,
-      [0, 1],
-      ['red', 'lime'],
-    );
+    const backgroundColor = interpolateColor(sv.value, [0, 1], ['red', 'lime']);
     return {backgroundColor};
   });
 

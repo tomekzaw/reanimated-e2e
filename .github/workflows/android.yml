@@ -30,6 +30,18 @@ jobs:
       - name: Install node_modules
         run: yarn install --frozen-lockfile
 
+      - name: Lint with Prettier
+        working-directory: MyApp
+        run: yarn lint:prettier
+
+      - name: Lint with ESLint
+        working-directory: MyApp
+        run: yarn lint:eslint
+
+      - name: Check types
+        working-directory: MyApp
+        run: yarn types:check
+
       - name: Setup Java 11
         uses: actions/setup-java@v3
         with:
