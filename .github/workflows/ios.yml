@@ -28,15 +28,12 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Lint with Prettier
-        working-directory: MyApp
         run: yarn lint:prettier
 
       - name: Lint with ESLint
-        working-directory: MyApp
         run: yarn lint:eslint
 
       - name: Check types
-        working-directory: MyApp
         run: yarn types:check
 
       - name: Cache Pods
