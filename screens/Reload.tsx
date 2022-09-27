@@ -1,6 +1,8 @@
 import Animated, {
+  interpolateColor,
   useAnimatedStyle,
   useSharedValue,
+  withRepeat,
   withTiming,
 } from 'react-native-reanimated';
 import {Button, DevSettings, StyleSheet} from 'react-native';
@@ -8,30 +10,26 @@ import React, {useEffect} from 'react';
 
 import {testProps} from '../utils';
 
-function RotatingBox() {
+export function Reload() {
   const sv = useSharedValue(0);
 
   useEffect(() => {
     sv.value = 0;
-    sv.value = withTiming(90);
+    sv.value = withRepeat(withTiming(1), -1, false);
   }, [sv]);
 
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{rotate: `${sv.value}deg`}],
-    backgroundColor: 'lime',
-  }));
+  const box = useAnimatedStyle(() => {
+    const backgroundColor = interpolateColor(sv.value, [0, 1], ['red', 'lime']);
+    return {backgroundColor};
+  });
 
-  return <Animated.View style={[styles.box, animatedStyle]} />;
-}
-
-export function Reload() {
   const handlePress = () => {
     DevSettings.reload(); // this is a no-op in release mode
   };
 
   return (
     <>
-      <RotatingBox />
+      <Animated.View style={[styles.box, box]} />
       <Button title="Reload" onPress={handlePress} {...testProps('button')} />
     </>
   );
