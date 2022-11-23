@@ -56,7 +56,7 @@ describe('Appium with Jest automation testing', () => {
         await button.getText();
         return;
       } catch (e) {
-        await client.pause(5_000);
+        await client.pause(1000);
       }
     }
     fail('App is not launched');
@@ -143,7 +143,7 @@ describe('Appium with Jest automation testing', () => {
     expect(before).toEqual('0');
 
     await button.click();
-    await client.pause(1000);
+    await client.pause(2000);
 
     const after = await text.getText();
     expect(after).toEqual('100');
@@ -193,15 +193,15 @@ describe('Appium with Jest automation testing', () => {
   if (process.env.VARIANT === 'debug') {
     test('reload once', async () => {
       await openTest('Reload');
-      await client.pause(10000);
+      await client.pause(1000);
 
       const button = await client.$('~button');
       await button.click(); // reload app
-      await client.pause(10000);
+      await client.pause(1000);
       waitForApp();
 
       await openTest('Reload');
-      await client.pause(10000);
+      await client.pause(1000);
     });
   }
 });
