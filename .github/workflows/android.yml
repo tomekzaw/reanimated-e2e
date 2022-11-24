@@ -48,35 +48,33 @@ jobs:
       - name: Cache Gradle
         uses: gradle/gradle-build-action@v2
 
-      - name: Cache AVD
-        uses: actions/cache@v3
-        id: avd-cache
-        with:
-          path: |
-            ~/.android/avd/*
-            ~/.android/adb*
-          key: avd-api-${{ env.api-level }}-v10
-
-      - name: Create AVD and generate snapshot for caching
-        if: steps.avd-cache.outputs.cache-hit != 'true'
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: ${{ env.api-level }}
-          force-avd-creation: false
-          emulator-options: ${{ env.emulator-options }}
-          script: echo "Generated AVD snapshot for caching."
+      - name: Create Android emulator
+        run: |
+          # brew install intel-haxm
+          # Install AVD files
+          echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install 'system-images;android-27;default;x86_64'
+          echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --licenses
+          
+          # Create emulator
+          $ANDROID_HOME/tools/bin/avdmanager create avd -n Pixel_API_29_AOSP -d pixel --package 'system-images;android-27;default;x86_64'
+          $ANDROID_HOME/emulator/emulator -list-avds
+          
+      - name: Start Android emulator
+        run: |
+          echo "Starting emulator and waiting for boot to complete...."
+          ls -la $ANDROID_HOME/emulator
+          nohup $ANDROID_HOME/tools/emulator -avd Pixel_API_29_AOSP -gpu host -no-audio -no-boot-anim -camera-back none -camera-front none -qemu -m 2048 2>&1 &
+          $ANDROID_HOME/platform-tools/adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed | tr -d '\r') ]]; do echo "wait..."; sleep 1; done; input keyevent 82'
+          echo "Emulator has finished booting"
+          $ANDROID_HOME/platform-tools/adb devices
+          sleep 30
 
       - name: Launch Metro bundler
         if: ${{ matrix.variant == 'debug' }}
         run: yarn start &
 
       - name: Build Android app
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: ${{ env.api-level }}
-          force-avd-creation: false
-          emulator-options: -no-snapshot-save ${{ env.emulator-options }}
-          script: yarn build:android:${{ matrix.variant }}
+        run: yarn build:android:${{ matrix.variant }}
 
       - name: Run Appium server
         run: |
@@ -86,9 +84,4 @@ jobs:
           done
 
       - name: Run Android E2E tests
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: ${{ env.api-level }}
-          force-avd-creation: false
-          emulator-options: -no-snapshot-save ${{ env.emulator-options }}
-          script: yarn test:e2e:android:${{ matrix.variant }}
+        run: yarn test:e2e:android:${{ matrix.variant }}
