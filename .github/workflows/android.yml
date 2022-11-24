@@ -10,9 +10,6 @@ on:
 jobs:
   Android:
     runs-on: macos-12
-    env:
-      api-level: 29
-      emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
     strategy:
       fail-fast: false
       matrix:
@@ -78,10 +75,16 @@ jobs:
 
       - name: Run Appium server
         run: |
-          yarn appium &
+          yarn appium | tee appium.log &
           until $(curl --output /dev/null --silent --head --fail http://127.0.0.1:4723/wd/hub/sessions); do
             sleep 5
           done
 
       - name: Run Android E2E tests
         run: yarn test:e2e:android:${{ matrix.variant }}
+
+      - name: Upload Appium logs
+        uses: actions/upload-artifact@v3
+        with:
+          name: appium.log
+          path: appium.log

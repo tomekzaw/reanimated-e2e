@@ -20,6 +20,7 @@ describe('Appium with Jest automation testing', () => {
           ? './android/app/build/outputs/apk/debug/app-debug.apk'
           : './android/app/build/outputs/apk/release/app-release.apk',
       automationName: 'UiAutomator2',
+      uiautomator2ServerInstallTimeout: 60_000,
     };
 
     const ios = {
