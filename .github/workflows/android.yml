@@ -81,7 +81,7 @@ jobs:
           done
 
       - name: Run Android E2E tests
-        run: yarn test:e2e:android:${{ matrix.variant }} 2> >(tee -a jest.log >&2)
+        run: yarn test:e2e:android:${{ matrix.variant }} --color 2> >(tee -a jest.log >&2)
 
       - name: Upload Appium logs
         if: always()
@@ -96,3 +96,6 @@ jobs:
         with:
           name: jest.log
           path: jest.log
+
+      - name: Write test results to summary
+        run: cat jest.log >> $GITHUB_STEP_SUMMARY
