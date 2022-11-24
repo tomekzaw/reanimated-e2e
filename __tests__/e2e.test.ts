@@ -190,15 +190,15 @@ describe('Appium with Jest automation testing', () => {
   if (process.env.VARIANT === 'debug') {
     test('reload once', async () => {
       await openTest('Reload');
-      await client.pause(1000);
+      await client.pause(10_000);
 
       const button = await client.$('~button');
       await button.click(); // reload app
-      await client.pause(10_000);
+      await client.pause(30_000);
       waitForApp();
 
       await openTest('Reload');
-      await client.pause(1000);
+      await client.pause(10_000);
     });
   }
 });
