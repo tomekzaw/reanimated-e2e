@@ -81,7 +81,7 @@ jobs:
           done
 
       - name: Run Android E2E tests
-        run: yarn test:e2e:android:${{ matrix.variant }}
+        run: yarn test:e2e:android:${{ matrix.variant }} 2> >(tee -a jest.log >&2)
 
       - name: Upload Appium logs
         if: always()
@@ -89,3 +89,10 @@ jobs:
         with:
           name: appium.log
           path: appium.log
+
+      - name: Upload Jest logs
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: jest.log
+          path: jest.log
