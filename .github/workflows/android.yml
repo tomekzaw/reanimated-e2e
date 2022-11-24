@@ -21,11 +21,11 @@ jobs:
       - name: Checkout Git repository
         uses: actions/checkout@v3
 
-      - name: Cache node_modules
-        uses: actions/cache@v3
-        with:
-          path: ./node_modules
-          key: ${{ hashFiles('./yarn.lock') }}
+      # - name: Cache node_modules
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: ./node_modules
+      #     key: ${{ hashFiles('./yarn.lock') }}
 
       - name: Install node_modules
         run: yarn install --frozen-lockfile
@@ -45,8 +45,8 @@ jobs:
           distribution: 'zulu'
           java-version: 11
 
-      - name: Cache Gradle
-        uses: gradle/gradle-build-action@v2
+      # - name: Cache Gradle
+      #   uses: gradle/gradle-build-action@v2
 
       - name: Create Android emulator
         run: |
