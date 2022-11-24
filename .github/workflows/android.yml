@@ -39,11 +39,11 @@ jobs:
       - name: Check types
         run: yarn types:check
 
-      - name: Setup Java 11
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: 11
+      # - name: Setup Java 11
+      #   uses: actions/setup-java@v3
+      #   with:
+      #     distribution: 'zulu'
+      #     java-version: 11
 
       - name: Cache Gradle
         uses: gradle/gradle-build-action@v2
