@@ -39,11 +39,11 @@ jobs:
       - name: Check types
         run: yarn types:check
 
-      # - name: Setup Java 11
-      #   uses: actions/setup-java@v3
-      #   with:
-      #     distribution: 'zulu'
-      #     java-version: 11
+      - name: Setup Java 11
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 11
 
       - name: Cache Gradle
         uses: gradle/gradle-build-action@v2
@@ -52,11 +52,11 @@ jobs:
         run: |
           # brew install intel-haxm
           # Install AVD files
-          echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install 'system-images;android-27;default;x86_64'
-          echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --licenses
+          echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install 'system-images;android-27;default;x86_64'
+          echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
           
           # Create emulator
-          $ANDROID_HOME/tools/bin/avdmanager create avd -n Pixel_API_29_AOSP -d pixel --package 'system-images;android-27;default;x86_64'
+          $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager create avd -n Pixel_API_29_AOSP -d pixel --package 'system-images;android-27;default;x86_64'
           $ANDROID_HOME/emulator/emulator -list-avds
           
       - name: Start Android emulator
