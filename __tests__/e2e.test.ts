@@ -102,10 +102,6 @@ describe('Appium with Jest automation testing', () => {
 
     const after = await client.takeScreenshot();
 
-    if (process.env.CI === 'true' && process.env.PLATFORM === 'android') {
-      return; // for some reason screenshots on Android on CI have correct dimensions but are completely black
-    }
-
     // TODO: compare pixel colors
     expect(before).not.toBe(after);
   });
@@ -198,7 +194,7 @@ describe('Appium with Jest automation testing', () => {
 
       const button = await client.$('~button');
       await button.click(); // reload app
-      await client.pause(1000);
+      await client.pause(10_000);
       waitForApp();
 
       await openTest('Reload');
