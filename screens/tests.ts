@@ -1,4 +1,5 @@
 import {AnimateBackgroundColor} from './AnimateBackgroundColor';
+import {AnimateSvg} from './AnimateSvg';
 import {AnimateText} from './AnimateText';
 import {AnimateWidth} from './AnimateWidth';
 import {GestureHandlerDragDrop} from './GestureHandlerDragDrop';
@@ -11,6 +12,7 @@ export const TESTS = [
   {name: 'AnimateBackgroundColor', component: AnimateBackgroundColor},
   {name: 'AnimateWidth', component: AnimateWidth},
   {name: 'AnimateText', component: AnimateText},
+  {name: 'AnimateSvg', component: AnimateSvg},
   {name: 'ScrollTo', component: ScrollTo},
   {name: 'GestureHandlerDragDrop', component: GestureHandlerDragDrop},
   {name: 'Reload', component: Reload},

@@ -142,6 +142,21 @@ describe('Appium with Jest automation testing', () => {
     expect(after).not.toEqual(before);
   });
 
+  test('animate svg', async () => {
+    await openTest('AnimateSvg');
+
+    const svg = await client.$('~svg');
+    const button = await client.$('~button');
+
+    const before = await client.takeElementScreenshot(svg.elementId);
+
+    await button.click();
+    await client.pause(2000);
+
+    const after = await client.takeElementScreenshot(svg.elementId);
+    expect(after).not.toEqual(before);
+  });
+
   test('scroll to', async () => {
     await openTest('ScrollTo');
 
@@ -186,15 +201,15 @@ describe('Appium with Jest automation testing', () => {
   if (process.env.VARIANT === 'debug') {
     test('reload once', async () => {
       await openTest('Reload');
-      await client.pause(10_000);
+      await client.pause(process.env.CI === 'true' ? 10_000 : 1000);
 
       const button = await client.$('~button');
       await button.click(); // reload app
-      await client.pause(30_000);
+      await client.pause(process.env.CI === 'true' ? 30_000 : 1000);
       waitForApp();
 
       await openTest('Reload');
-      await client.pause(10_000);
+      await client.pause(process.env.CI === 'true' ? 10_000 : 1000);
     });
   }
 });

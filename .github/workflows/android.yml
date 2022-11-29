@@ -10,6 +10,7 @@ on:
 jobs:
   Android:
     runs-on: macos-12
+    timeout-minutes: 120
     strategy:
       fail-fast: false
       matrix:
@@ -46,6 +47,7 @@ jobs:
       #   uses: gradle/gradle-build-action@v2
 
       - name: Create Android emulator
+        timeout-minutes: 10
         run: |
           # brew install intel-haxm
           # Install AVD files
@@ -57,6 +59,7 @@ jobs:
           $ANDROID_HOME/emulator/emulator -list-avds
           
       - name: Start Android emulator
+        timeout-minutes: 10
         run: |
           echo "Starting emulator and waiting for boot to complete...."
           ls -la $ANDROID_HOME/emulator
@@ -71,6 +74,7 @@ jobs:
         run: yarn start &
 
       - name: Build Android app
+        timeout-minutes: 40
         run: yarn build:android:${{ matrix.variant }}
 
       - name: Run Appium server
@@ -81,6 +85,7 @@ jobs:
           done
 
       - name: Run Android E2E tests
+        timeout-minutes: 20
         run: yarn test:e2e:android:${{ matrix.variant }} 2> >(tee -a jest.log >&2)
 
       - name: Upload Appium logs

@@ -1,0 +1,90 @@
+name: CI
+
+on:
+  push:
+    branches: ['appium']
+  pull_request:
+    branches: ['appium']
+  workflow_dispatch:
+
+jobs:
+  iOS:
+    runs-on: macos-12
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        variant: ['debug', 'release']
+    steps:
+      - name: Checkout Git repository
+        uses: actions/checkout@v3
+
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: ./node_modules
+          key: ${{ hashFiles('./yarn.lock') }}
+
+      - name: Install node_modules
+        run: yarn install --frozen-lockfile
+
+      - name: Lint with Prettier
+        run: yarn lint:prettier
+
+      - name: Lint with ESLint
+        run: yarn lint:eslint
+
+      - name: Check types
+        run: yarn types:check
+
+      - name: Cache Pods
+        uses: actions/cache@v3
+        with:
+          path: ./ios/Pods
+          key: pods-${{ matrix.variant }}-${{ hashFiles('./ios/Podfile.lock') }}
+
+      - name: Install Pods
+        timeout-minutes: 20
+        if: ${{ matrix.variant == 'debug' }}
+        working-directory: ios
+        run: RCT_NEW_ARCH_ENABLED=1 pod install
+
+      - name: Install Pods
+        timeout-minutes: 20
+        if: ${{ matrix.variant == 'release' }}
+        working-directory: ios
+        run: PRODUCTION=1 RCT_NEW_ARCH_ENABLED=1 pod install
+
+      - name: Cache build
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./ios/build
+            ~/Library/Developer/Xcode/DerivedData
+          key: build-${{ matrix.variant }}-${{ hashFiles('./ios/Podfile.lock') }}
+
+      - name: Launch Metro bundler
+        if: ${{ matrix.variant == 'debug' }}
+        run: yarn start &
+
+      - name: Build iOS app
+        timeout-minutes: 40
+        run: yarn build:ios:${{ matrix.variant }} --simulator 'iPhone 13 (15.5)'
+
+      - name: Run Appium server
+        run: |
+          yarn appium &
+          until $(curl --output /dev/null --silent --head --fail http://127.0.0.1:4723/wd/hub/sessions); do
+            sleep 5
+          done
+
+      - name: Install WebDriverAgentRunner
+        run: |
+          cd ./node_modules/appium-webdriveragent &&
+          unzip -o WebDriverAgentRunner-Runner.app.zip -d WebDriverAgentRunner-Runner.app &&
+          xcrun simctl install "iPhone 13" WebDriverAgentRunner-Runner.app &&
+          xcrun simctl launch "iPhone 13" com.facebook.WebDriverAgentRunner.xctrunner
+
+      - name: Run iOS E2E tests
+        timeout-minutes: 20
+        run: yarn test:e2e:ios:${{ matrix.variant }}
