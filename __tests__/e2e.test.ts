@@ -90,6 +90,22 @@ describe('Appium with Jest automation testing', () => {
     expect(string).toBe('Hello world!');
   });
 
+  test('worklets', async () => {
+    await openTest('Worklets');
+
+    const text = await client.$('~text');
+    const button = await client.$('~button');
+
+    const before = await text.getText();
+    expect(before).toEqual('?');
+
+    await button.click();
+    await client.pause(500);
+
+    const after = await text.getText();
+    expect(after).toEqual('OK');
+  });
+
   test('animate background color', async () => {
     await openTest('AnimateBackgroundColor');
 
