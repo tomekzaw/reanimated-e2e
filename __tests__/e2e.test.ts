@@ -25,8 +25,8 @@ describe('Appium with Jest automation testing', () => {
 
     const ios = {
       platformName: 'iOS',
-      deviceName: 'iPhone 13',
-      platformVersion: process.env.CI === 'true' ? '16.0' : '15.0',
+      deviceName: 'iPhone 14',
+      platformVersion: '16.0',
       bundleId: 'org.reactjs.native.example.MyApp',
       automationName: 'XCUITest',
     };
@@ -51,7 +51,7 @@ describe('Appium with Jest automation testing', () => {
   }
 
   async function waitForApp() {
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 60; i++) {
       const button = await client.$('~HelloWorld');
       try {
         await button.getText();
