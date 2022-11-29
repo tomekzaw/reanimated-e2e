@@ -1,4 +1,7 @@
 import Animated, {
+  createAnimatedPropAdapter,
+  interpolateColor,
+  processColor,
   useAnimatedProps,
   useSharedValue,
   withTiming,
@@ -11,16 +14,28 @@ import {testProps} from '../utils';
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
-Animated.addWhitelistedNativeProps({r: true});
+const adapter = createAnimatedPropAdapter(
+  (props: any) => {
+    if (Object.keys(props).includes('fill')) {
+      props.fill = {type: 0, payload: processColor(props.fill)};
+    }
+  },
+  ['fill'],
+);
 
 export function AnimateSvg() {
   const sv = useSharedValue(0);
 
-  const animatedProps = useAnimatedProps(() => {
-    return {
-      r: `${5 + sv.value * 40}%`,
-    };
-  });
+  const animatedProps = useAnimatedProps(
+    () => {
+      return {
+        fill: interpolateColor(sv.value, [0, 1], ['red', 'lime']),
+        r: `${5 + sv.value * 40}%`,
+      };
+    },
+    [],
+    adapter,
+  );
 
   const handlePress = () => {
     sv.value = withTiming(1, {duration: 500});
