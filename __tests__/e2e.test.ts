@@ -103,7 +103,7 @@ describe('Appium with Jest automation testing', () => {
     const after = await client.takeScreenshot();
 
     // TODO: compare pixel colors
-    expect(before).not.toBe(after);
+    expect(after).not.toBe(before);
   });
 
   test('animate width', async () => {
@@ -132,18 +132,14 @@ describe('Appium with Jest automation testing', () => {
     const text = await client.$('~text');
     const button = await client.$('~button');
 
-    const before = await text.getText();
-    if (process.env.PLATFORM === 'ios' && before === '') {
-      // This doesn't work on Fabric, skip the test.
-      return;
-    }
-    expect(before).toEqual('0');
+    const before = await client.takeElementScreenshot(text.elementId);
+    // `text.getText()` always returns an empty string on Fabric, so we must compare screenshots
 
     await button.click();
     await client.pause(2000);
 
-    const after = await text.getText();
-    expect(after).toEqual('100');
+    const after = await client.takeElementScreenshot(text.elementId);
+    expect(after).not.toEqual(before);
   });
 
   test('scroll to', async () => {
