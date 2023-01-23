@@ -26,7 +26,7 @@ jobs:
       #     key: ${{ hashFiles('./yarn.lock') }}
 
       - name: Install node_modules
-        run: yarn install --production=true --frozen-lockfile
+        run: yarn install --frozen-lockfile
 
       - name: Lint with Prettier
         run: yarn lint:prettier
