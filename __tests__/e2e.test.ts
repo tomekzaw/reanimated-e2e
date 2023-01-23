@@ -25,8 +25,8 @@ describe('Appium with Jest automation testing', () => {
 
     const ios = {
       platformName: 'iOS',
-      deviceName: 'iPhone 14',
-      platformVersion: '16.0',
+      deviceName: 'iPhone 14 Pro',
+      platformVersion: '16.2',
       bundleId: 'org.reactjs.native.example.MyApp',
       automationName: 'XCUITest',
     };

@@ -1,8 +1,11 @@
 import {Platform, Text} from 'react-native';
 
 import React from 'react';
+import {version as reactNativeGestureHandlerVersion} from 'react-native-gesture-handler/package.json';
+import {version as reactNativeReanimatedVersion} from 'react-native-reanimated/package.json';
+import {version as reactNativeScreensVersion} from 'react-native-screens/package.json';
+import {version as reactNativeSvgVersion} from 'react-native-svg/package.json';
 import {version as reactNativeVersion} from 'react-native/package.json';
-import {version as reanimatedVersion} from 'react-native-reanimated/package.json';
 import {testProps} from '../utils';
 
 function getPlatform() {
@@ -28,7 +31,10 @@ export function HelloWorld() {
     <>
       <Text {...testProps('text')}>Hello world!</Text>
       <Text>React Native version: {reactNativeVersion}</Text>
-      <Text>Reanimated version: {reanimatedVersion}</Text>
+      <Text>Reanimated version: {reactNativeReanimatedVersion}</Text>
+      <Text>Gesture Handler version: {reactNativeGestureHandlerVersion}</Text>
+      <Text>Screens version: {reactNativeScreensVersion}</Text>
+      <Text>SVG version: {reactNativeSvgVersion}</Text>
       <Text>Platform: {getPlatform()}</Text>
       <Text>Mode: {getMode()}</Text>
       <Text>Architecture: {getArchitecture()}</Text>
